@@ -221,33 +221,25 @@ class TempScore extends StatelessWidget {
     final Color color = COLORS[player];
 
     return new Container(
-        margin: EdgeInsets.all(10),
-        padding: EdgeInsets.all(10),
-        decoration: BoxDecoration(
-          color: color,
-          border: Border.all(
-              color: Colors.white, width: 4, style: BorderStyle.solid),
-          borderRadius: BorderRadius.all(Radius.circular(10)),
-          boxShadow: <BoxShadow>[
-            BoxShadow(color: Colors.black, blurRadius: 4, offset: Offset(1, 1))
-          ],
+      margin: EdgeInsets.all(10),
+      padding: EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: color,
+        border:
+            Border.all(color: Colors.white, width: 4, style: BorderStyle.solid),
+        borderRadius: BorderRadius.all(Radius.circular(10)),
+        boxShadow: <BoxShadow>[
+          BoxShadow(color: Colors.black, blurRadius: 4, offset: Offset(1, 1))
+        ],
+      ),
+      child: RotatedBox(
+        quarterTurns: player == PLAYER_TWO ? 2 : 0,
+        child: Text(
+          counter.toModString(),
+          style: Theme.of(context).textTheme.display2,
         ),
-        child: new Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            RotatedBox(
-              quarterTurns: player == PLAYER_TWO ? 2 : 0,
-              child: Text(
-                counter.toMathString(),
-                style: Theme.of(context).textTheme.display1,
-              ),
-            ),
-//            Text(
-//              counter.toMathString(),
-//              style: Theme.of(context).textTheme.display1,
-//            ),
-          ],
-        ));
+      ),
+    );
   }
 }
 
@@ -301,7 +293,8 @@ class ScoreTile extends StatelessWidget {
             ),
             counter.mod != 0
                 ? Container(
-                    alignment: Alignment(0, player == PLAYER_ONE ? 0.45 : -0.45),
+                    alignment:
+                        Alignment(0, player == PLAYER_ONE ? 0.45 : -0.45),
                     child: RotatedBox(
                       quarterTurns: player == PLAYER_ONE ? 2 : 0,
                       child: Text(
