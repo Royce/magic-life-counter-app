@@ -276,10 +276,11 @@ class ScoreTile extends StatelessWidget {
                       ],
               ),
             ),
-            Align(
+            Container(
               alignment: player == PLAYER_ONE
                   ? Alignment.bottomCenter
                   : Alignment.topCenter,
+              margin: EdgeInsets.all(5),
               child: Opacity(
                 opacity: 0.5,
                 child: RotatedBox(
@@ -293,8 +294,10 @@ class ScoreTile extends StatelessWidget {
             ),
             counter.mod != 0
                 ? Container(
-                    alignment:
-                        Alignment(0, player == PLAYER_ONE ? 0.45 : -0.45),
+                    alignment: Alignment(0, player == PLAYER_ONE ? 0.4 : -0.4),
+                    margin: player == PLAYER_ONE
+                        ? EdgeInsets.only(top: 40)
+                        : EdgeInsets.only(bottom: 40),
                     child: RotatedBox(
                       quarterTurns: player == PLAYER_ONE ? 2 : 0,
                       child: Text(
