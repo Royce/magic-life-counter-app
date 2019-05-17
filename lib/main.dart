@@ -6,7 +6,7 @@ import 'dart:math';
 
 const PLAYER_ONE = 'one';
 const PLAYER_TWO = 'two';
-const COLORS = {PLAYER_ONE: Colors.pink, PLAYER_TWO: Colors.lightBlue};
+const COLORS = {PLAYER_ONE: Colors.pinkAccent, PLAYER_TWO: Colors.lightBlue};
 
 void main() {
   runApp(MyApp());
@@ -149,6 +149,48 @@ class _MyTreeState extends State<MyTree> {
   }
 }
 
+class OutlinedText extends StatelessWidget {
+  OutlinedText(this.data,
+      {Key key,
+      this.fontSize,
+      this.textColor = Colors.white,
+      this.outlineColor = Colors.black,
+      this.rotate = false})
+      : super(key: key);
+
+  final String data;
+  final double fontSize;
+  final Color textColor;
+  final Color outlineColor;
+  final bool rotate;
+
+  @override
+  Widget build(BuildContext context) {
+    return RotatedBox(
+      quarterTurns: rotate ? 2 : 0,
+      child: Text(
+        data,
+        style: TextStyle(
+          inherit: true,
+          fontSize: fontSize,
+          fontWeight: FontWeight.w600,
+          color: textColor,
+          shadows: [
+            Shadow(offset: Offset(1, 0), color: outlineColor),
+            Shadow(offset: Offset(0.8, 0.8), color: outlineColor),
+            Shadow(offset: Offset(0, 1), color: outlineColor),
+            Shadow(offset: Offset(-0.8, 0.8), color: outlineColor),
+            Shadow(offset: Offset(-1, 0), color: outlineColor),
+            Shadow(offset: Offset(-0.8, -0.8), color: outlineColor),
+            Shadow(offset: Offset(0, -1), color: outlineColor),
+            Shadow(offset: Offset(0.8, -0.8), color: outlineColor),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 class StartingPlayerDialog extends StatelessWidget {
   final String player;
 
@@ -199,12 +241,10 @@ class TempScores extends StatelessWidget {
         state.counters.entries.where((e) => e.value.mod != 0).map((e) => e.key);
 
     return Center(
-      child: IntrinsicWidth(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: players.map((player) => TempScore(player: player)).toList(),
-        ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: players.map((player) => TempScore(player: player)).toList(),
       ),
     );
   }
@@ -220,23 +260,30 @@ class TempScore extends StatelessWidget {
     final Counter counter = state.counters[player];
     final Color color = COLORS[player];
 
-    return new Container(
-      margin: EdgeInsets.all(10),
-      padding: EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: color,
-        border:
-            Border.all(color: Colors.white, width: 4, style: BorderStyle.solid),
-        borderRadius: BorderRadius.all(Radius.circular(10)),
-        boxShadow: <BoxShadow>[
-          BoxShadow(color: Colors.black, blurRadius: 4, offset: Offset(1, 1))
-        ],
-      ),
-      child: RotatedBox(
-        quarterTurns: player == PLAYER_TWO ? 2 : 0,
-        child: Text(
-          counter.toModString(),
-          style: Theme.of(context).textTheme.display2,
+    return Material(
+      type: MaterialType.transparency,
+      child: Container(
+        margin: EdgeInsets.all(10),
+        padding: EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          color: color,
+          border: Border.all(
+              color: Colors.white, width: 4, style: BorderStyle.solid),
+          borderRadius: BorderRadius.all(Radius.circular(10)),
+          boxShadow: <BoxShadow>[
+            BoxShadow(color: Colors.black, blurRadius: 4, offset: Offset(1, 1))
+          ],
+        ),
+        child: RotatedBox(
+          quarterTurns: player == PLAYER_TWO ? 2 : 0,
+          child: Text(
+            counter.toModString(),
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 70,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
         ),
       ),
     );
@@ -251,6 +298,7 @@ class ScoreTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var width = MediaQuery.of(context).size.width;
     assert(debugCheckHasMaterial(context));
 
     final MyInheritedWidgetState state = MyInheritedWidget.of(context);
@@ -308,12 +356,12 @@ class ScoreTile extends StatelessWidget {
                   )
                 : Container(),
             Center(
-              child: RotatedBox(
-                quarterTurns: rotated ? 2 : 0,
-                child: Text(
-                  '${counter.counter + counter.mod}',
-                  style: Theme.of(context).textTheme.display4,
-                ),
+              child: OutlinedText(
+                '${counter.counter + counter.mod}',
+                fontSize: width / 3,
+                rotate: rotated,
+                outlineColor: counter.counter <= 0 ? Colors.white : Colors.black,
+                textColor: counter.counter <= 0 ? Colors.black : Colors.white,
               ),
             ),
           ],
@@ -336,7 +384,7 @@ class Incrementer extends StatelessWidget {
     return InkWell(
       onTap: () => {state.increment(player)},
       child: Container(
-        padding: EdgeInsets.all(width / 2 - 5),
+        padding: EdgeInsets.all(width / 3),
         child: Icon(
           Icons.add,
           color: Colors.white24,
@@ -360,7 +408,7 @@ class Decrementer extends StatelessWidget {
     return InkWell(
       onTap: () => {state.decrement(player)},
       child: Container(
-        padding: EdgeInsets.all(width / 2 - 5),
+        padding: EdgeInsets.all(width / 3),
         child: Icon(
           Icons.remove,
           color: Colors.white24,
