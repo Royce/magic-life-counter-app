@@ -501,7 +501,7 @@ class Counter {
   String toHistoryString() {
     final int show = 6;
     return _history.length > show
-        ? "⋯, ${_history.sublist(_history.length + 1 - show).join(", ")}"
+        ? "…, ${_history.sublist(_history.length + 1 - show).join(", ")}"
         : _history.join(", ");
   }
 }
