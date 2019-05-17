@@ -13,7 +13,6 @@ void main() {
   keepAwake();
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
-    DeviceOrientation.portraitDown,
   ]);
 }
 
