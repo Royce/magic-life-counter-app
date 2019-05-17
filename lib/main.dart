@@ -220,16 +220,16 @@ class TempScore extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             RotatedBox(
-              quarterTurns: 2,
+              quarterTurns: player == PLAYER_TWO ? 2 : 0,
               child: Text(
                 counter.toMathString(),
                 style: Theme.of(context).textTheme.display1,
               ),
             ),
-            Text(
-              counter.toMathString(),
-              style: Theme.of(context).textTheme.display1,
-            ),
+//            Text(
+//              counter.toMathString(),
+//              style: Theme.of(context).textTheme.display1,
+//            ),
           ],
         ));
   }
@@ -268,11 +268,38 @@ class ScoreTile extends StatelessWidget {
                       ],
               ),
             ),
+            Align(
+              alignment: player == PLAYER_ONE
+                  ? Alignment.bottomCenter
+                  : Alignment.topCenter,
+              child: Opacity(
+                opacity: 0.5,
+                child: RotatedBox(
+                  quarterTurns: player == PLAYER_ONE ? 2 : 0,
+                  child: Text(
+                    counter.toHistoryString(),
+                    style: Theme.of(context).accentTextTheme.headline,
+                  ),
+                ),
+              ),
+            ),
+            counter.mod != 0
+                ? Container(
+                    alignment: Alignment(0, player == PLAYER_ONE ? 0.45 : -0.45),
+                    child: RotatedBox(
+                      quarterTurns: player == PLAYER_ONE ? 2 : 0,
+                      child: Text(
+                        counter.toModString(),
+                        style: Theme.of(context).accentTextTheme.display1,
+                      ),
+                    ),
+                  )
+                : Container(),
             Center(
               child: RotatedBox(
                 quarterTurns: rotated ? 2 : 0,
                 child: Text(
-                  '${counter.counter}',
+                  '${counter.counter + counter.mod}',
                   style: Theme.of(context).textTheme.display4,
                 ),
               ),
@@ -297,7 +324,7 @@ class Incrementer extends StatelessWidget {
     return InkWell(
       onTap: () => {state.increment(player)},
       child: Container(
-        padding: EdgeInsets.all(width/2 - 5),
+        padding: EdgeInsets.all(width / 2 - 5),
         child: Icon(
           Icons.add,
           color: Colors.white24,
@@ -321,7 +348,7 @@ class Decrementer extends StatelessWidget {
     return InkWell(
       onTap: () => {state.decrement(player)},
       child: Container(
-        padding: EdgeInsets.all(width/2 - 5),
+        padding: EdgeInsets.all(width / 2 - 5),
         child: Icon(
           Icons.remove,
           color: Colors.white24,
@@ -427,6 +454,7 @@ class Palette extends StatelessWidget {
 class Counter {
   int counter = 20;
   int mod = 0;
+  List<String> _history = [];
 
   Counter(this.counter);
 
@@ -440,10 +468,14 @@ class Counter {
 
   void reset(int num) {
     counter = num;
+    _history = [];
   }
 
   void commit() {
     counter = counter + mod;
+    if (mod != 0) {
+      _history.add(toModString());
+    }
     mod = 0;
   }
 
@@ -451,5 +483,16 @@ class Counter {
     return mod >= 0
         ? '$counter + $mod  →  ${counter + mod}'
         : "$counter - ${-mod}  →  ${counter + mod}";
+  }
+
+  String toModString() {
+    return mod >= 0 ? '+$mod' : mod.toString();
+  }
+
+  String toHistoryString() {
+    final int show = 6;
+    return _history.length > show
+        ? "⋯, ${_history.sublist(_history.length + 1 - show).join(", ")}"
+        : _history.join(", ");
   }
 }
