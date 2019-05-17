@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_keepscreenon/flutter_keepscreenon.dart';
 import 'dart:async';
 import 'dart:math';
 
@@ -6,7 +8,22 @@ const PLAYER_ONE = 'one';
 const PLAYER_TWO = 'two';
 const COLORS = {PLAYER_ONE: Colors.pink, PLAYER_TWO: Colors.lightBlue};
 
-void main() => runApp(MyApp());
+void main() {
+  runApp(MyApp());
+  keepAwake();
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
+}
+
+keepAwake() async {
+  try {
+    await FlutterKeepscreenon.keepScreenOn(true);
+  } on PlatformException catch (e) {
+    print(e);
+  }
+}
 
 class MyApp extends StatelessWidget {
   @override
