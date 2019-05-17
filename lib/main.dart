@@ -273,7 +273,7 @@ class ScoreTile extends StatelessWidget {
             Center(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: rotated
+                children: !rotated
                     ? <Widget>[
                         Decrementer(player: player),
                         Incrementer(player: player),
