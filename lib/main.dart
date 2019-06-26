@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_keepscreenon/flutter_keepscreenon.dart';
+import 'package:package_info/package_info.dart';
+
 import 'dart:async';
 import 'dart:math';
 
@@ -9,7 +11,9 @@ const PLAYER_TWO = 'two';
 const COLORS = {PLAYER_ONE: Colors.pinkAccent, PLAYER_TWO: Colors.lightBlue};
 
 void main() {
-  runApp(MyApp());
+  PackageInfo.fromPlatform().then((PackageInfo packageInfo) {
+    runApp(MyApp(name: packageInfo.appName));
+  });
   keepAwake();
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
@@ -25,10 +29,13 @@ keepAwake() async {
 }
 
 class MyApp extends StatelessWidget {
+  MyApp({Key key, @required this.name}) : super(key: key);
+  final String name;
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Magic Life Counter',
+      title: name,
       home: MyTree(),
     );
   }
@@ -360,7 +367,8 @@ class ScoreTile extends StatelessWidget {
                 '${counter.counter + counter.mod}',
                 fontSize: width / 3,
                 rotate: rotated,
-                outlineColor: counter.counter <= 0 ? Colors.white : Colors.black,
+                outlineColor:
+                    counter.counter <= 0 ? Colors.white : Colors.black,
                 textColor: counter.counter <= 0 ? Colors.black : Colors.white,
               ),
             ),
