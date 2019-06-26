@@ -1,0 +1,1 @@
+Very simple score counter for the Magic card game. Starts at 20, with buttons to increment/decrement your score. For two players.
