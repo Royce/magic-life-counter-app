@@ -1,1 +1,0 @@
-Score counter for the Magic card game.

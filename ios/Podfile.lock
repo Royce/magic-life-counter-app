@@ -1,22 +1,22 @@
 PODS:
   - Flutter (1.0.0)
-  - flutter_keepscreenon (0.0.1):
+  - keep_screen_on (3.0.0):
     - Flutter
 
 DEPENDENCIES:
-  - Flutter (from `.symlinks/flutter/ios`)
-  - flutter_keepscreenon (from `.symlinks/plugins/flutter_keepscreenon/ios`)
+  - Flutter (from `Flutter`)
+  - keep_screen_on (from `.symlinks/plugins/keep_screen_on/ios`)
 
 EXTERNAL SOURCES:
   Flutter:
-    :path: ".symlinks/flutter/ios"
-  flutter_keepscreenon:
-    :path: ".symlinks/plugins/flutter_keepscreenon/ios"
+    :path: Flutter
+  keep_screen_on:
+    :path: ".symlinks/plugins/keep_screen_on/ios"
 
 SPEC CHECKSUMS:
-  Flutter: 9d0fac939486c9aba2809b7982dfdbb47a7b0296
-  flutter_keepscreenon: 924fcfa5451e9b5aa4de145c9f6fcc1474b31698
+  Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
+  keep_screen_on: bc3e0a8520835eb03d3697ff76e8b1c34637353c
 
-PODFILE CHECKSUM: ebd43b443038e611b86ede96e613bd6033c49497
+PODFILE CHECKSUM: 819463e6a0290f5a72f145ba7cde16e8b6ef0796
 
-COCOAPODS: 1.5.3
+COCOAPODS: 1.15.2
